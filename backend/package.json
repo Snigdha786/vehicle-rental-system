@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "seq:mig": "npx sequelize-cli db:migrate --config=config/config.js",
+    "seq:mig:gen": "npx sequelize-cli migration:generate --name",
+    "seq:seed": "npx sequelize-cli db:seed:all --config=config/config.js",
+    "seq:seed:gen": "npx sequelize-cli seed:generate --name",
+    "seq:mig:undo": "npx sequelize-cli db:migrate:undo --config=config/config.js",
+    "seq:seed:undo": "npx sequelize-cli db:seed:undo --config=config/config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0",
+    "sequelize": "^6.37.6"
+  },
+  "type": "module",
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
+  }
+}
