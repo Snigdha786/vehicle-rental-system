@@ -14,6 +14,7 @@ export const submitBooking = async ({
   model,
   dateRange,
 }) => {
+  try {
   console.log("Processing Booking:", {
     firstName,
     lastName,
@@ -22,6 +23,10 @@ export const submitBooking = async ({
     model,
     dateRange,
   });
+
+    if (!dateRange.start || !dateRange.end) {
+      throw new Error("Date Range is required");
+    }
 
   const vehicleModel = await Vehicle.findOne({
     where: { model_name: model },
@@ -52,13 +57,17 @@ export const submitBooking = async ({
   });
 
   return { successFlag: true };
+  } catch (error) {
+    console.error("Error in submitBooking:", error.message);
+    return { successFlag: false, error: error.message };
+  }
 };
 
 /**
  * Fetches vehicle types and models based on user input.
  */
 export const getVehicleData = async ({ wheels, vehicleType}) => {
-
+  try {
   const vehicleWheels = await VehicleType.findAll({
         attributes: ["wheels"],
         group: ["wheels"],
@@ -86,12 +95,38 @@ export const getVehicleData = async ({ wheels, vehicleType}) => {
   }
 
   return { vehicleTypes, vehicleModels,vehicleWheels };
+  } catch (error) {
+    console.error("Error in getVehicleData:", error.message);
+    return { error: error.message };
+  }
 };
 
-
 /**
- * Handles form validatation
+ * Handles form validation
  */
-// export const validateForm= async ({ }) => {
+export const validateForm = async (requestParams) => {
+    console.log("Validating Form:", requestParams);
+    const { firstName, lastName, wheels, vehicleType, model, dateRange, step } = requestParams;
 
-//   };
+    if (step === "0") {
+      if (!firstName || !lastName) {
+        throw new Error("First Name and Last Name are required");
+      }
+    }
+    if (step === "1") {
+      if (!wheels) {
+        throw new Error("Wheels is required");
+      }
+    }
+    if (step === "2") {
+      if (!vehicleType) {
+        throw new Error("Vehicle Type is required");
+      }
+    }
+    if (step === "3") {
+      if (!model) {
+        throw new Error("Model is required");
+      }
+    }
+  
+};
